@@ -1,0 +1,6 @@
+{
+  "name": "Portfolio de Desarrollador con CV",
+  "description": "Portafolio dinámico con filtros de proyectos en tiempo real, modo oscuro, edición y exportación de CV digital a PDF compatible con ATS, y simulación de sincronización sin conexión.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
