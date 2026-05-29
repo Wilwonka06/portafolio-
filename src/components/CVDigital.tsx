@@ -245,11 +245,14 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
 
   // Trigger browser print to save CV as PDF
   const triggerPrintPdf = () => {
+    const originalTitle = document.title;
+    document.title = "Hoja de Vida Wilson Rojas";
     setShowPrintHint(true);
     // Short grace delay to allow reading the optimal browser instructions, then trigger print dialog
     setTimeout(() => {
       window.print();
-    }, 250);
+      document.title = originalTitle;
+    }, 300);
   };
 
   return (
@@ -353,11 +356,11 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
                 <div className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-805/85 rounded-3xl overflow-hidden shadow-sm transition-colors">
                   
                   {/* Decorative Banner top */}
-                  <div className="h-28 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-600 via-indigo-700 to-slate-900 relative">
-                    <div className="absolute bottom-4 right-6 flex items-center gap-1.5 opacity-80 text-[10px] text-white font-mono bg-black/30 px-2 py-0.5 rounded border border-white/10">
+                  <div className="h-28 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/60 via-indigo-50/70 to-zinc-50 border-b border-gray-100/60 relative">
+                    {/* <div className="absolute bottom-4 right-6 flex items-center gap-1.5 opacity-80 text-[10px] text-white font-mono bg-black/30 px-2 py-0.5 rounded border border-white/10">
                       <Sparkles className="h-3 w-3 text-yellow-400" />
                       <span>Sincronizado Localmente</span>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Body container */}
@@ -798,7 +801,7 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
                                 />
                               </div>
                               <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Periodo</label>
+                                <label className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-wider block mb-0.5">Periodo</label>
                                 <input
                                   type="text"
                                   value={exp.period}
@@ -809,19 +812,19 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
                             </div>
 
                             <div>
-                              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Resumen de impacto</label>
+                              <label className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-wider block mb-0.5">Resumen de impacto</label>
                               <input
                                 type="text"
                                 value={exp.description}
                                 onChange={(e) => handleExperienceChange(exp.id, "description", e.target.value)}
-                                className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-md py-1 px-2.5 text-xs text-gray-600 dark:text-zinc-350 italic"
+                                className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-md py-1 px-2.5 text-xs text-gray-650 dark:text-zinc-350 italic font-semibold"
                               />
                             </div>
 
                             {/* Bullet points experience targets achievements */}
                             <div className="space-y-2">
                               <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Metas y Logros Clave (Bullet list ATS)</span>
+                                <span className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-widest block">Metas y Logros Clave (Bullet list ATS)</span>
                                 <button
                                   onClick={() => addExpBullet(exp.id)}
                                   className="text-[10px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5 font-bold cursor-pointer"
@@ -890,45 +893,45 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
                               <Trash2 className="h-4 w-4" />
                             </button>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pr-8">
-                              <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Título o Carrera</label>
-                                <input
-                                  type="text"
-                                  value={edu.degree}
-                                  onChange={(e) => handleEducationChange(edu.id, "degree", e.target.value)}
-                                  className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-805 rounded-md py-1 px-2.5 text-xs text-gray-800 dark:text-zinc-200 focus:outline-none focus:border-blue-500 font-bold"
-                                />
-                              </div>
-                              <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Institución</label>
-                                <input
-                                  type="text"
-                                  value={edu.school}
-                                  onChange={(e) => handleEducationChange(edu.id, "school", e.target.value)}
-                                  className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-md py-1 px-2.5 text-xs text-gray-800 dark:text-zinc-200 focus:outline-none focus:border-blue-500"
-                                />
-                              </div>
-                              <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Periodo</label>
-                                <input
-                                  type="text"
-                                  value={edu.period}
-                                  onChange={(e) => handleEducationChange(edu.id, "period", e.target.value)}
-                                  className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-md py-1 px-2.5 text-xs text-gray-850 dark:text-zinc-200 focus:outline-none focus:border-blue-500 font-mono"
-                                />
-                              </div>
-                            </div>
+                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pr-8">
+                               <div>
+                                 <label className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-wider block mb-0.5">Título o Carrera</label>
+                                 <input
+                                   type="text"
+                                   value={edu.degree}
+                                   onChange={(e) => handleEducationChange(edu.id, "degree", e.target.value)}
+                                   className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-805 rounded-md py-1 px-2.5 text-xs text-gray-850 dark:text-zinc-200 focus:outline-none focus:border-blue-500 font-bold"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-wider block mb-0.5">Institución</label>
+                                 <input
+                                   type="text"
+                                   value={edu.school}
+                                   onChange={(e) => handleEducationChange(edu.id, "school", e.target.value)}
+                                   className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-md py-1 px-2.5 text-xs text-gray-800 dark:text-zinc-200 focus:outline-none focus:border-blue-500"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-wider block mb-0.5">Periodo</label>
+                                 <input
+                                   type="text"
+                                   value={edu.period}
+                                   onChange={(e) => handleEducationChange(edu.id, "period", e.target.value)}
+                                   className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-md py-1 px-2.5 text-xs text-gray-850 dark:text-zinc-200 focus:outline-none focus:border-blue-500 font-mono"
+                                 />
+                               </div>
+                             </div>
 
-                            <div>
-                              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">Especialidad o Notas</label>
-                              <input
-                                type="text"
-                                value={edu.description || ""}
-                                onChange={(e) => handleEducationChange(edu.id, "description", e.target.value)}
-                                className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md py-1 px-2.5 text-xs text-gray-600 dark:text-zinc-300 italic"
-                              />
-                            </div>
+                             <div>
+                               <label className="text-[10px] font-extrabold text-zinc-650 dark:text-zinc-400 uppercase tracking-wider block mb-0.5">Especialidad o Notas</label>
+                               <input
+                                 type="text"
+                                 value={edu.description || ""}
+                                 onChange={(e) => handleEducationChange(edu.id, "description", e.target.value)}
+                                 className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md py-1 px-2.5 text-xs text-gray-650 dark:text-zinc-350 italic font-semibold"
+                               />
+                             </div>
 
                           </div>
                         ))}

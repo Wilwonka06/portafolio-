@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Catch-all default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Core verification primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Strict profile identity check: Wilson Rojas as owner
+    function isOwner() {
+      return isSignedIn() && 
+        request.auth.token.email == "rojaswil336@gmail.com" && 
+        request.auth.token.email_verified == true;
+    }
+
+    // Prevents ID Poisoning and resource injection
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // CV content rules
+    match /cv_data/{documentId} {
+      allow read: if true; // Publicly readable for readers/recruiters
+      allow write: if isOwner(); // Only writeable by the authenticated portfolio owner
+    }
+
+    // Portfolio projects rules
+    match /projects/{projectId} {
+      allow read: if true; // Publicly readable
+      allow write: if isOwner() && isValidId(projectId); // Only modifiable by Wilson
+    }
+  }
+}

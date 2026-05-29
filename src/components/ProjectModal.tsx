@@ -65,26 +65,26 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
         transition={{ type: "spring", stiffness: 350, damping: 28 }}
-        className="relative w-full max-w-3xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-zinc-800 my-8"
+        className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-zinc-200 my-4 max-h-[85vh] flex flex-col"
         onClick={handleContainerClick}
       >
         {/* Modal Close Floating Button */}
         <button
           id="btn-close-modal"
           onClick={onClose}
-          className="absolute top-5 right-5 z-10 p-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-gray-600 dark:text-zinc-300 rounded-full transition-all hover:scale-105 active:scale-95"
+          className="absolute top-5 right-5 z-10 p-2.5 bg-zinc-150 hover:bg-zinc-200 text-zinc-800 rounded-full transition-all hover:scale-105 active:scale-95"
           aria-label="Cerrar modal"
         >
           <X className="h-5 w-5" />
         </button>
 
-        <div className="p-6 sm:p-8">
+        <div className="p-6 sm:p-8 overflow-y-auto flex-1 text-left space-y-6">
           {/* Top Label & Title */}
-          <div className="mb-4">
-            <span className="text-sm font-semibold text-gray-400 dark:text-zinc-500 tracking-wider">
-              {project.year}
+          <div className="mb-2 flex flex-col items-start gap-1">
+            <span className="text-xs font-bold text-zinc-650 font-mono bg-zinc-100 px-2.5 py-1 rounded shadow-3xs uppercase tracking-wider">
+              Año: {project.year}
             </span>
-            <h2 className="text-3.5xl font-extrabold text-gray-900 dark:text-white tracking-tight mt-1">
+            <h2 className="text-3.5xl font-black text-zinc-950 tracking-tight mt-2 text-left">
               {project.name}
             </h2>
           </div>
@@ -120,8 +120,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             </div>
 
-            {/* Simulated Live Viewport of the App itself inside the Browser Frame */}
-            <div className="w-full aspect-[16/10] relative bg-cover bg-center overflow-hidden flex items-center justify-center" style={{ backgroundImage: `url(${project.image})` }}>
+            {/* Simulated Live Viewport of the App itself inside the Browser Frame - Sleeker maximum height aspect */}
+            <div className="w-full h-36 sm:h-48 md:h-52 relative bg-cover bg-center overflow-hidden flex items-center justify-center" style={{ backgroundImage: `url(${project.image})` }}>
               {/* Overlay styling for dynamic simulation */}
               <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-[2px] p-6 flex flex-col justify-between text-white">
                 
@@ -272,25 +272,25 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           {/* Description Block */}
           <div className="mb-6">
-            <p className="text-lg text-gray-700 dark:text-zinc-300 leading-relaxed font-sans font-normal mb-4">
+            <p className="text-lg text-zinc-900 leading-relaxed font-sans font-semibold mb-4 text-left">
               {project.description}
             </p>
-            <p className="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">
+            <p className="text-sm text-zinc-800 leading-relaxed text-left font-normal">
               {project.longDescription}
             </p>
           </div>
 
           {/* Project Highlights bullet points */}
           {project.highlights && project.highlights.length > 0 && (
-            <div className="mb-6 bg-gray-50 dark:bg-zinc-950/40 border border-gray-100 dark:border-zinc-800/60 rounded-xl p-4">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-zinc-500 mb-2.5">
+            <div className="mb-6 bg-zinc-50 border border-zinc-200 rounded-xl p-5 text-left">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-2.5">
                 Logros Clave y Métricas
               </h4>
               <ul className="space-y-1.5">
                 {project.highlights.map((highlight, index) => (
-                  <li key={index} className="text-xs text-gray-700 dark:text-zinc-300 flex items-start gap-2">
-                    <span className="text-emerald-500 mt-0.5">✓</span>
-                    <span>{highlight}</span>
+                  <li key={index} className="text-xs text-zinc-900 flex items-start gap-2">
+                    <span className="text-emerald-600 mt-0.5 font-bold">✓</span>
+                    <span className="font-medium text-zinc-800">{highlight}</span>
                   </li>
                 ))}
               </ul>
@@ -298,8 +298,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           )}
 
           {/* Technology Badges Matrix - Matches Image Exactly */}
-          <div className="mb-8">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-zinc-500 mb-3">
+          <div className="mb-8 text-left">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-3">
               Stack de Tecnologías y Herramientas
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -307,7 +307,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <div
                   key={index}
                   id={`tech-badge-${project.id}-${index}`}
-                  className="flex items-center gap-2 px-3.5 py-2 bg-sky-50/70 border border-sky-100 text-sky-800 dark:bg-zinc-850 dark:border-zinc-800 dark:text-zinc-200 text-xs font-semibold rounded-full hover:scale-[1.03] transition-transform select-none"
+                  className="flex items-center gap-2 px-3.5 py-2 bg-blue-50/80 border border-blue-200 text-blue-900 text-xs font-bold rounded-full hover:scale-[1.03] transition-transform select-none"
                 >
                   {getTechIcon(tech.name)}
                   <span className="font-sans">{tech.name}</span>

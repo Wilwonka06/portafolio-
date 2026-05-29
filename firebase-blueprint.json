@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "cv_data": {
+      "title": "CVData",
+      "description": "The interactive CV profile containing contact info, professional summary, structured work experiences, higher education, and grouped technical skill categories.",
+      "type": "object",
+      "properties": {
+        "contact": {
+          "type": "object",
+          "description": "Contact details of the candidate: email, phone, location, github, linkedin, website."
+        },
+        "summary": {
+          "type": "string",
+          "description": "The candidate's core profile summary, bio, or professional statement."
+        },
+        "experience": {
+          "type": "array",
+          "description": "The candidate's historical professional work trajectory containing roles, companies, dates, and metric bullets."
+        },
+        "education": {
+          "type": "array",
+          "description": "The candidate's higher academic education history."
+        },
+        "skillCategories": {
+          "type": "array",
+          "description": "List of categories of skills, each hosting individual skills with optional level descriptors."
+        },
+        "featuredProjects": {
+          "type": "array",
+          "description": "List of highlighted projects references."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Standard timestamp for matching operational sync logs."
+        }
+      },
+      "required": [
+        "contact",
+        "summary",
+        "experience",
+        "education",
+        "skillCategories"
+      ]
+    },
+    "project": {
+      "title": "Project",
+      "description": "A single portfolio project item showcasing client or personal developments.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the project document."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the project."
+        },
+        "year": {
+          "type": "string",
+          "description": "Year of development or deployment."
+        },
+        "description": {
+          "type": "string",
+          "description": "Short introductory summary of the project."
+        },
+        "longDescription": {
+          "type": "string",
+          "description": "Detailed multi-paragraph description outlining technical problems, solutions, and impacts."
+        },
+        "image": {
+          "type": "string",
+          "description": "Cover image URL."
+        },
+        "url": {
+          "type": "string",
+          "description": "Demo live deployment URL."
+        },
+        "github": {
+          "type": "string",
+          "description": "Source code repository public URL."
+        },
+        "technologies": {
+          "type": "array",
+          "description": "Array of technology tags with corresponding categories."
+        },
+        "highlights": {
+          "type": "array",
+          "description": "List of key features, metrics, or technical achievements."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Standard update log timestamp."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "year",
+        "description",
+        "longDescription",
+        "image",
+        "url",
+        "technologies",
+        "highlights"
+      ]
+    }
+  },
+  "firestore": {
+    "/cv_data/main": {
+      "schema": "cv_data",
+      "description": "The primary entry point storing the entire candidate identity and ATS resume parameters."
+    },
+    "/projects/{projectId}": {
+      "schema": "project",
+      "description": "Collection of projects showcasing developer developments. Can be added, list, and edited."
+    }
+  }
+}
