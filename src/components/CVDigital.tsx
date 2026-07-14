@@ -243,23 +243,18 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
     });
   };
 
-  // Trigger browser print to save CV as PDF
-  const triggerPrintPdf = () => {
-    const originalTitle = document.title;
-    document.title = "Hoja de Vida Wilson Rojas";
+  const triggerPrintPdf = async () => {
     setShowPrintHint(true);
-    // Short grace delay to allow reading the optimal browser instructions, then trigger print dialog
     setTimeout(() => {
       window.print();
-      document.title = originalTitle;
-    }, 300);
+    }, 500);
   };
 
   return (
     <div id="cv-interactive-module" className="space-y-6">
       
       {/* Header Bar with View/Edit toggle & print action */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800/80 p-4 rounded-2xl shadow-xs transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-zinc-900 border border-gray-100/50 dark:border-zinc-800/80 p-4 rounded-2xl shadow-xs transition-colors print:hidden">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-lg">
             <FileText className="h-5 w-5" />
@@ -275,7 +270,7 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
         {/* Action controllers */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Mode Tabs */}
-          <div className="bg-gray-100 dark:bg-zinc-950 p-1 rounded-xl flex border border-gray-200/40 dark:border-zinc-800">
+          <div className="bg-gray-100 dark:bg-zinc-950 p-1 rounded-xl flex border border-gray-200/50/40 dark:border-zinc-800">
             <button
               id="tab-cv-view"
               onClick={() => { setActiveTab("view"); setShowPrintHint(false); }}
@@ -308,10 +303,10 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
           <button
             id="btn-export-pdf"
             onClick={triggerPrintPdf}
-            className="px-4 py-1.5.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-xs border border-blue-600"
+            className="px-6 py-2.5 bg-zinc-900 hover:bg-black active:scale-95 text-white text-xs font-serif tracking-widest uppercase font-semibold rounded-full flex items-center gap-2 transition-all cursor-pointer shadow-md dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-900"
             title="Abre la ventana de impresión para guardar el CV digital de manera idónea"
           >
-            <Download className="h-3.5 w-3.5" />
+            <Download className="h-4 w-4" />
             <span>Exportar PDF ATS</span>
           </button>
         </div>
@@ -322,22 +317,22 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-blue-50 dark:bg-blue-950/45 border border-blue-200/50 dark:border-blue-900/30 text-blue-800 dark:text-blue-300 rounded-2xl text-xs flex gap-3"
+          className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-300 rounded-2xl text-xs flex gap-3 font-sans print:hidden"
         >
-          <Lightbulb className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
+          <Lightbulb className="h-5 w-5 text-zinc-500 shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <p className="font-bold">💡 Instrucciones para Exportación Óptima a PDF:</p>
-            <ul className="list-disc list-inside space-y-0.5 text-blue-700/90 dark:text-blue-300/80 font-normal">
-              <li>En el diálogo de guardado del navegador, configura el destino como <strong className="font-semibold">Guardar como PDF</strong>.</li>
-              <li>Desactiva la opción de <strong className="font-semibold">Cabeceras y pies de página</strong> en la pestaña "Más Ajustes" para evitar textos de urls en los bordes.</li>
-              <li>Establece el tamaño del papel en <strong className="font-semibold">Carta (Letter) o A4</strong> con márgenes predeterminados o ninguno.</li>
+            <p className="font-bold font-serif text-sm">Instrucciones para Exportación Óptima a PDF:</p>
+            <ul className="list-disc list-inside space-y-0.5 text-zinc-600 dark:text-zinc-400 font-normal">
+              <li>En el diálogo de guardado del navegador, configura el destino como <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Guardar como PDF</strong>.</li>
+              <li>Desactiva la opción de <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Cabeceras y pies de página</strong> en la pestaña "Más Ajustes".</li>
+              <li>Establece el tamaño del papel en <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Carta (Letter) o A4</strong>.</li>
             </ul>
           </div>
         </motion.div>
       )}
 
       {/* Core Panels Grid rendering view or edit */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-12 gap-6 print:hidden">
 
         {/* MAIN PANEL CONTENT - VIEW/PREVIEW OR EDITOR */}
         <div className="col-span-12">
@@ -380,10 +375,10 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
 
                     {/* Meta info & profile names */}
                     <div className="text-left mb-6">
-                      <h3 className="text-2.5xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-none">
+                      <h3 className="text-3xl font-serif font-bold text-gray-900 dark:text-white tracking-tight leading-none">
                         {data.contact.name}
                       </h3>
-                      <p className="text-sm font-semibold text-blue-600 dark:text-blue-400 mt-1.5">
+                      <p className="text-sm font-serif font-semibold text-zinc-600 dark:text-zinc-400 mt-1.5 uppercase tracking-widest">
                         {data.contact.title}
                       </p>
 
@@ -521,11 +516,6 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
                     </div>
 
                   </div>
-                </div>
-
-                {/* Print Layout Hidden Preview in standard UI, shown in print triggers */}
-                <div className="hidden">
-                  <CVPdfTemplate data={data} />
                 </div>
               </motion.div>
             ) : (
@@ -946,6 +936,11 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
           </AnimatePresence>
         </div>
 
+      </div>
+
+      {/* Print Layout - visible only during printing */}
+      <div id="pdf-export-wrapper" className="hidden print:block print:w-full print:bg-white text-black">
+        <CVPdfTemplate data={data} />
       </div>
     </div>
   );

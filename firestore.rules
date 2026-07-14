@@ -35,5 +35,11 @@ service cloud.firestore {
       allow read: if true; // Publicly readable
       allow write: if isOwner() && isValidId(projectId); // Only modifiable by Wilson
     }
+
+    // Technology Stack rules
+    match /tech_stack/{documentId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
   }
 }

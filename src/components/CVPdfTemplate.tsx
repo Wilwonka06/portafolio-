@@ -15,7 +15,7 @@ export const CVPdfTemplate = forwardRef<HTMLDivElement, CVPdfTemplateProps>(
         className="w-full bg-white text-[#111] p-8 sm:p-12 font-sans overflow-hidden border border-gray-100 rounded-3xl"
         style={{
           color: "#111111",
-          fontFamily: "'Inter', sans-serif"
+          fontFamily: "'Lora', serif"
         }}
       >
         {/* Print Styles Injector */}
@@ -43,10 +43,10 @@ export const CVPdfTemplate = forwardRef<HTMLDivElement, CVPdfTemplateProps>(
 
         {/* ATS Compatible Header - Clear Hierarchy */}
         <div className="text-center border-b-2 border-zinc-200 pb-5 mb-6">
-          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 uppercase">
+          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 uppercase font-serif">
             {data.contact.name}
           </h1>
-          <p className="text-sm font-semibold text-zinc-700 tracking-wide uppercase mt-1">
+          <p className="text-sm font-semibold text-zinc-700 tracking-wide uppercase mt-1 font-serif">
             {data.contact.title}
           </p>
 

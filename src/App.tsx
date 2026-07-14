@@ -221,7 +221,7 @@ export default function App() {
   });
 
   // Hidden admin click count to toggle editor buttons for Wilson Rojas (5 clicks in header / footer)
-  const [adminClickCount, setAdminClickCount] = useState(0);
+  const [clickTimes, setClickTimes] = useState<number[]>([]);
   const [adminNotification, setAdminNotification] = useState<string | null>(null);
   const [showAdminTabOption, setShowAdminTabOption] = useState(() => {
     if (typeof window !== "undefined") {
@@ -231,9 +231,13 @@ export default function App() {
   });
 
   const handleSecretClick = () => {
-    setAdminClickCount((prev) => {
-      const next = prev + 1;
-      if (next >= 5) {
+    const now = Date.now();
+    setClickTimes((prev) => {
+      // Filtrar clicks que ocurrieron hace más de 2 segundos (2000 ms)
+      const currentValid = prev.filter((t) => now - t <= 2000);
+      const updated = [...currentValid, now];
+      
+      if (updated.length >= 5) {
         const nextState = !showAdminTabOption;
         setShowAdminTabOption(nextState);
         setIsOwner(nextState);
@@ -243,9 +247,9 @@ export default function App() {
         }
         setAdminNotification(nextState ? "🔓 ¡Modo de edición dueño activado!" : "🔒 Modo lector estándar activado.");
         setTimeout(() => setAdminNotification(null), 3000);
-        return 0;
+        return [];
       }
-      return next;
+      return updated;
     });
   };
 
@@ -709,7 +713,7 @@ export default function App() {
       </AnimatePresence>
       
       {/* GLOBAL NAVBAR HEADER */}
-      <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-zinc-200">
+      <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-zinc-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           
           {/* Left Brand Identity: Name and Role (Toggles admin mode with 5 clicks secretly) */}
@@ -1053,7 +1057,7 @@ export default function App() {
                       </p>
                     </div>
                   ) : filteredProjects.length === 0 ? (
-                    <div className="py-20 text-center border-2 border-dashed border-gray-200 dark:border-zinc-800/80 rounded-3xl bg-white dark:bg-zinc-900">
+                    <div className="py-20 text-center border-2 border-dashed border-gray-200/50 dark:border-zinc-800/80 rounded-3xl bg-white dark:bg-zinc-900">
                       <span className="text-3xl block">🔍</span>
                       <h3 className="text-base font-bold text-gray-800 dark:text-zinc-200 mt-2">
                         No se encontraron proyectos correspondientes
@@ -1659,7 +1663,7 @@ export default function App() {
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.15 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-3xl shadow-xl w-full max-w-2xl overflow-hidden text-left"
+              className="bg-white dark:bg-zinc-900 border border-gray-100/50 dark:border-zinc-800 rounded-3xl shadow-xl w-full max-w-2xl overflow-hidden text-left"
             >
               <div className="p-5 border-b border-gray-100 dark:border-zinc-800 flex items-center justify-between">
                 <h3 className="text-base font-extrabold text-gray-950 dark:text-white uppercase tracking-wider">
@@ -1826,7 +1830,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* FLOATING ACTION BOTTOM NAV (Projects / CV Digital) - AS REQUESTED ("proyectos / cv digital, conviertela en botones flotantes en la parte inferior en el centro") */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] bg-white/95 backdrop-blur-md border border-zinc-300 p-1.5 rounded-full flex items-center justify-center gap-1 px-2.5 shadow-2xl max-w-[90vw]">
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] bg-white/40 backdrop-blur-xl border border-white/60 p-1.5 rounded-full flex items-center justify-center gap-1 px-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.1)] max-w-[90vw]">
         <button
           onClick={() => {
             setActiveView("projects");
@@ -1834,8 +1838,8 @@ export default function App() {
           }}
           className={`px-5 py-2.5 rounded-full text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer select-none ${
             activeView === "projects"
-              ? "bg-zinc-950 text-white shadow-md scale-105"
-              : "text-zinc-700 hover:text-zinc-950 bg-transparent hover:bg-zinc-100/50"
+              ? "bg-white/90 text-zinc-950 shadow-[0_4px_12px_rgba(0,0,0,0.05)] scale-105 border border-white/80"
+              : "text-zinc-700 hover:text-zinc-950 bg-transparent hover:bg-white/50"
           }`}
         >
           <FolderKanban className="h-4 w-4 text-blue-800" />
@@ -1848,8 +1852,8 @@ export default function App() {
           }}
           className={`px-5 py-2.5 rounded-full text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer select-none ${
             activeView === "cv"
-              ? "bg-zinc-950 text-white shadow-md scale-105"
-              : "text-zinc-700 hover:text-zinc-950 bg-transparent hover:bg-zinc-100/50"
+              ? "bg-white/90 text-zinc-950 shadow-[0_4px_12px_rgba(0,0,0,0.05)] scale-105 border border-white/80"
+              : "text-zinc-700 hover:text-zinc-950 bg-transparent hover:bg-white/50"
           }`}
         >
           <Briefcase className="h-4 w-4 text-blue-800" />

@@ -51,6 +51,10 @@ export default function SyncIndicator({
     }
   }, [isActuallyOffline]);
 
+  if (!isActuallyOffline && syncStatus === "synced") {
+    return null;
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-3 p-3 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl transition-colors">
       {/* Network Status Dot */}
