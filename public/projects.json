@@ -5,7 +5,7 @@
     "name": "EnrutApp",
     "description": "Sistema de gestión logística para transporte. Optimiza asignación de vehículos, valida identidad y rastrea GPS en tiempo real.",
     "longDescription": "Una solución integral diseñada para modernizar y optimizar la logística de transporte terrestre. Cuenta con algoritmos avanzados de ruteo dinámico, asignación inteligente de carga, validación biométrica de la identidad de los operarios antes de iniciar ruta, y rastreo satelital satélite/GPS continuo con actualizaciones en vivo de milisegundos a través de canales bidireccionales de baja latencia.",
-    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1200",
+    "image": "/presentacion.jpeg",
     "url": "https://enrutapp.web.app",
     "github": "https://github.com/developer/enrutapp",
     "technologies": [
@@ -33,7 +33,7 @@
     "name": "CloudFire Analytics",
     "description": "Dashboard analítico en tiempo real que procesa eventos de telemetría de apps móviles implementando Google Cloud Functions y Firestore.",
     "longDescription": "Plataforma de inteligencia empresarial y procesamiento de flujo de datos diseñada para capturar, agregar y visualizar millones de eventos diarios. Implementa una arquitectura serverless escalable con triggers de Firestore y Cloud Run, entregando paneles e informes en tiempo real a los gestores de productos.",
-    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
+    "image": "/presentacion.jpeg",
     "url": "https://cloudfire-analytics.web.app",
     "github": "https://github.com/developer/cloudfire-analytics",
     "technologies": [
@@ -58,7 +58,7 @@
     "name": "DocuShare Drive",
     "description": "Gestor y colaborador de documentos corporativos en la nube integrado con Google Workspace APIs, Google Drive y Firebase.",
     "longDescription": "Un portal seguro e intuitivo para la co-creación y gestión documental empresarial. Ofrece vinculación bidireccional inmediata con carpetas de Google Drive de los usuarios, búsqueda semántica indexada por metadatos, edición en tiempo real de notas y un historial completo de cambios con firmas digitales.",
-    "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200",
+    "image": "/presentacion.jpeg",
     "url": "https://docushare-drive.web.app",
     "github": "https://github.com/developer/docushare",
     "technologies": [

@@ -15,8 +15,7 @@ service cloud.firestore {
     // Strict profile identity check: Wilson Rojas as owner
     function isOwner() {
       return isSignedIn() && 
-        request.auth.token.email == "rojaswil336@gmail.com" && 
-        request.auth.token.email_verified == true;
+        request.auth.token.email == "rojaswil336@gmail.com";
     }
 
     // Prevents ID Poisoning and resource injection

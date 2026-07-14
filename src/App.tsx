@@ -238,15 +238,7 @@ export default function App() {
       const updated = [...currentValid, now];
       
       if (updated.length >= 5) {
-        const nextState = !showAdminTabOption;
-        setShowAdminTabOption(nextState);
-        setIsOwner(nextState);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("portfolio-show-admin-trigger", String(nextState));
-          localStorage.setItem("portfolio-is-owner", String(nextState));
-        }
-        setAdminNotification(nextState ? "🔓 ¡Modo de edición dueño activado!" : "🔒 Modo lector estándar activado.");
-        setTimeout(() => setAdminNotification(null), 3000);
+        triggerGoogleLogin();
         return [];
       }
       return updated;
@@ -302,7 +294,7 @@ export default function App() {
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             return parsed.map((item: any) => {
               const staticMatch = STATIC_TECH_STACK_DATA.find(s => s.name.toLowerCase() === item.name.toLowerCase());
               return {
@@ -365,7 +357,13 @@ export default function App() {
   // Google Auth popups
   const triggerGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      if (currentUser) {
+        await signOut(auth);
+        setAdminNotification("🔒 Sesión de Google finalizada.");
+        setTimeout(() => setAdminNotification(null), 3000);
+      } else {
+        await signInWithPopup(auth, googleProvider);
+      }
     } catch (err: any) {
       console.error("Google Auth fail: ", err);
       setAdminNotification("⚠️ Error de autenticación. Abre el sitio en una pestaña nueva.");
@@ -392,35 +390,9 @@ export default function App() {
         list.push({ id: pSnap.id, ...pSnap.data() } as Project);
       });
 
-      if (snapshot.empty) {
-        // Load defaults from local JSON file to ensure visitors can instantly see data
-        fetch("/projects.json")
-          .then(res => res.json())
-          .then(data => {
-            setProjects(data);
-            setProjectError(null);
-            
-            // Populate database ONLY if the current logged-in user is the verified owner
-            if (auth.currentUser?.email === "rojaswil336@gmail.com") {
-              data.forEach(async (proj: Project) => {
-                try {
-                  await setDoc(doc(db, "projects", proj.id), proj);
-                } catch (writeErr) {
-                  console.error("Failed to bootstrap project to Firestore: ", writeErr);
-                  handleFirestoreError(writeErr, OperationType.WRITE, `projects/${proj.id}`);
-                }
-              });
-            }
-          })
-          .catch(err => {
-            console.error("Error populating projects: ", err);
-            setProjectError("Fallo al inicializar proyectos por defecto.");
-          });
-      } else {
-        list.sort((a, b) => b.year.localeCompare(a.year));
-        setProjects(list);
-        setProjectError(null);
-      }
+      list.sort((a, b) => b.year.localeCompare(a.year));
+      setProjects(list);
+      setProjectError(null);
       setIsLoadingProjects(false);
     }, (err) => {
       console.error("Firestore projects listener error: ", err);
@@ -443,17 +415,6 @@ export default function App() {
     const unsubscribe = onSnapshot(doc(db, "cv_data", "main"), (snap) => {
       if (snap.exists()) {
         setCvData(snap.data() as CVData);
-      } else {
-        // Offline fallback to INITIAL_CV_DATA
-        setCvData(INITIAL_CV_DATA);
-        // Write defaults to Firestore ONLY if the current logged-in user is the verified owner
-        if (auth.currentUser?.email === "rojaswil336@gmail.com") {
-          setDoc(doc(db, "cv_data", "main"), INITIAL_CV_DATA)
-            .catch(err => {
-              console.error("Bootstrap writing CV error: ", err);
-              handleFirestoreError(err, OperationType.WRITE, "cv_data/main");
-            });
-        }
       }
     }, (err) => {
       console.error("CV data listener error: ", err);
@@ -469,17 +430,6 @@ export default function App() {
       if (snap.exists()) {
         const stackList = snap.data().items as any[];
         setTechStack(stackList);
-      } else {
-        const initialStack = STATIC_TECH_STACK_DATA.map(t => ({ ...t, enabled: true }));
-        setTechStack(initialStack);
-        // Write defaults to Firestore ONLY if the current logged-in user is the verified owner
-        if (auth.currentUser?.email === "rojaswil336@gmail.com") {
-          setDoc(doc(db, "cv_data", "tech_stack"), { items: initialStack })
-            .catch(err => {
-              console.error("Bootstrap writing Techstack error: ", err);
-              handleFirestoreError(err, OperationType.WRITE, "cv_data/tech_stack");
-            });
-        }
       }
     }, (err) => {
       console.error("Tech stack listener error: ", err);
@@ -1184,7 +1134,7 @@ export default function App() {
                     <div className="space-y-0.5 text-xs">
                       <h4 className="font-bold text-zinc-950">Persistencia con Soporte Sin Conexión:</h4>
                       <p className="text-zinc-600 leading-relaxed font-normal">
-                        Las adiciones, ediciones o eliminaciones de proyectos se conservan localmente de forma segura en `localStorage` con simulación automática hacia la nube de Google Cloud & Firebase Console.
+                        Las adiciones, ediciones o eliminaciones de proyectos se conservan en tiempo real de forma segura en la base de datos en la nube (Firebase Firestore), manteniéndose sincronizadas automáticamente.
                       </p>
                     </div>
                   </div>
@@ -1489,10 +1439,10 @@ export default function App() {
                 <div className="border-b border-zinc-150 pb-3">
                   <h3 className="text-xl font-extrabold text-zinc-950 tracking-tight flex items-center gap-2">
                     <Mail className="h-5 w-5 text-blue-900" />
-                    <span>Contáctame & Redes Sociales</span>
+                    <span>Contáctame</span>
                   </h3>
                   <p className="text-xs text-zinc-500 mt-1">
-                    ¿Quieres colaborar, implementar un sistema inteligente o migrar tu negocio a Google Cloud Platform?
+                    ¿Quieres colaborar, implementar un sistema inteligente o aumentarle el valor a tu negocio?
                   </p>
                 </div>
 
@@ -1682,15 +1632,28 @@ export default function App() {
 
               {/* Form rendering */}
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
                   const target = e.target as any;
+                  
+                  let imageDataUrl = editingProject ? editingProject.image : "";
+                  const fileInput = target.projImage as HTMLInputElement;
+                  if (fileInput.files && fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    imageDataUrl = await new Promise((resolve, reject) => {
+                      const reader = new FileReader();
+                      reader.onload = (event) => resolve(event.target?.result as string);
+                      reader.onerror = (error) => reject(error);
+                      reader.readAsDataURL(file);
+                    }) as string;
+                  }
+
                   handleSaveProjectForm(editingProject ? editingProject.id : "", {
                     name: target.projName.value,
                     year: target.projYear.value,
                     description: target.projDesc.value,
                     longDescription: target.projLongDesc.value,
-                    image: target.projImage.value,
+                    image: imageDataUrl,
                     url: target.projUrl.value,
                     github: target.projGithub.value,
                     techString: target.projTechs.value,
@@ -1725,15 +1688,19 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-gray-400 dark:text-zinc-500 uppercase block mb-1">Imagen de Portada (Enlace URL)</label>
+                  <label className="text-[11px] font-bold text-gray-400 dark:text-zinc-500 uppercase block mb-1">Imagen de Portada (Cargar Archivo)</label>
+                  {editingProject && editingProject.image && (
+                    <div className="mb-2">
+                      <img src={editingProject.image} alt="Current cover" className="h-16 rounded-md object-cover" />
+                    </div>
+                  )}
                   <input
-                    type="text"
+                    type="file"
+                    accept="image/*"
                     name="projImage"
-                    defaultValue={editingProject ? editingProject.image : ""}
-                    className="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-blue-500 text-gray-800 dark:text-zinc-200 font-mono"
-                    placeholder="Ej: https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+                    className="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-blue-500 text-gray-800 dark:text-zinc-200"
                   />
-                  <p className="text-[10px] text-gray-400 dark:text-zinc-500 mt-1">Sugerido: Usa cualquier enlace de Unsplash o Imgur. Puedes cambiar esta imagen en cualquier momento.</p>
+                  <p className="text-[10px] text-gray-400 dark:text-zinc-500 mt-1">Sube una imagen desde tu computadora.</p>
                 </div>
 
                 <div>
