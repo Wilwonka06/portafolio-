@@ -685,37 +685,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Header Horizontal Tabs (Visible on desktop alongside the bottom floating bar) */}
-          <div className="hidden md:flex items-center gap-2 bg-zinc-100 p-1 rounded-xl border border-zinc-200">
-            <button
-              onClick={() => {
-                setActiveView("projects");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-                activeView === "projects"
-                  ? "bg-white text-zinc-950 shadow-xs scale-[1.02]"
-                  : "text-zinc-500 hover:text-zinc-950 bg-transparent"
-              }`}
-            >
-              <FolderKanban className="h-3.5 w-3.5 text-blue-900" />
-              <span>Proyectos</span>
-            </button>
-            <button
-              onClick={() => {
-                setActiveView("cv");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-                activeView === "cv"
-                  ? "bg-white text-zinc-950 shadow-xs scale-[1.02]"
-                  : "text-zinc-550 hover:text-zinc-950 bg-transparent"
-              }`}
-            >
-              <Briefcase className="h-3.5 w-3.5 text-blue-900" />
-              <span>CV Digital</span>
-            </button>
-          </div>
+          {/* Header Horizontal Tabs (Visible on desktop alongside the bottom floating bar) - REMOVED */}
 
           {/* Right Area: Owner Toggle & Contact Actions */}
           <div className="flex items-center gap-3">
@@ -804,40 +774,6 @@ export default function App() {
 
                 {/* Section navigational redirect links */}
                 <div className="space-y-1">
-                  <button
-                    onClick={() => {
-                      setActiveView("projects");
-                      setMobileMenuOpen(false);
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    className={`w-full text-left px-4 py-3 rounded-lg text-xs font-extrabold flex items-center justify-between transition-colors ${
-                      activeView === "projects" ? "bg-zinc-950 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100 border border-zinc-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <FolderKanban className="h-4 w-4 text-blue-800" />
-                      <span>Proyectos Recientes</span>
-                    </div>
-                    <span className="text-[10px] opacity-75">›</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setActiveView("cv");
-                      setMobileMenuOpen(false);
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    className={`w-full text-left px-4 py-3 rounded-lg text-xs font-extrabold flex items-center justify-between transition-colors ${
-                      activeView === "cv" ? "bg-zinc-950 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100 border border-zinc-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Briefcase className="h-4 w-4 text-blue-800" />
-                      <span>CV Digital</span>
-                    </div>
-                    <span className="text-[10px] opacity-75">›</span>
-                  </button>
-
                   <button
                     onClick={() => {
                       setActiveView("projects");

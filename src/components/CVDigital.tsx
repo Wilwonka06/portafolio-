@@ -47,6 +47,50 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
   const [editSection, setEditSection] = useState<"profile" | "experience" | "skills" | "education">("profile");
   const [exportingPdf, setExportingPdf] = useState(false);
   const [showPrintHint, setShowPrintHint] = useState(false);
+  const [isImportingPdf, setIsImportingPdf] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleImportPdf = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsImportingPdf(true);
+    const formData = new FormData();
+    formData.append("pdf", file);
+
+    try {
+      const response = await fetch("/api/parse-cv", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to parse PDF");
+      }
+
+      const parsedData = await response.json();
+      
+      // Preserve existing featured projects if they are not in the parsed data
+      const mergedData = {
+        ...data,
+        ...parsedData,
+        featuredProjects: parsedData.featuredProjects && parsedData.featuredProjects.length > 0 
+          ? parsedData.featuredProjects 
+          : data.featuredProjects
+      };
+
+      onUpdate(mergedData);
+      alert("¡Hoja de vida importada con éxito!");
+    } catch (error) {
+      console.error("Error importing PDF:", error);
+      alert("Error al importar la hoja de vida.");
+    } finally {
+      setIsImportingPdf(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   // Helper to handle contact info changes
   const handleContactChange = (field: keyof typeof data.contact, value: string) => {
@@ -284,18 +328,40 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
               <span>Ver CV (Diseño)</span>
             </button>
             {isOwner && (
-              <button
-                id="tab-cv-edit"
-                onClick={() => setActiveTab("edit")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                  activeTab === "edit"
-                    ? "bg-white dark:bg-zinc-800 text-gray-900 dark:text-white shadow-xs"
-                    : "text-gray-500 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200"
-                }`}
-              >
-                <Settings className="h-3.5 w-3.5" />
-                <span>Editar Datos</span>
-              </button>
+              <>
+                <button
+                  id="tab-cv-edit"
+                  onClick={() => setActiveTab("edit")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    activeTab === "edit"
+                      ? "bg-white dark:bg-zinc-800 text-gray-900 dark:text-white shadow-xs"
+                      : "text-gray-500 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  <Settings className="h-3.5 w-3.5" />
+                  <span>Editar Datos</span>
+                </button>
+                <input 
+                  type="file" 
+                  accept="application/pdf" 
+                  ref={fileInputRef} 
+                  onChange={handleImportPdf} 
+                  className="hidden" 
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isImportingPdf}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer text-gray-500 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 disabled:opacity-50"
+                  title="Cargar un CV existente (PDF) para auto-completar los datos usando IA"
+                >
+                  {isImportingPdf ? (
+                    <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+                  ) : (
+                    <Download className="h-3.5 w-3.5 rotate-180" />
+                  )}
+                  <span>{isImportingPdf ? "Importando..." : "Importar CV (PDF)"}</span>
+                </button>
+              </>
             )}
           </div>
 
