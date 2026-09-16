@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Plus, 
@@ -590,21 +590,31 @@ export default function App() {
     }
   };
 
+  const cvUpdateTimeout = useRef<NodeJS.Timeout | null>(null);
+
   // Update dynamic CV data from edits
-  const handleUpdateCV = async (newData: CVData) => {
+  const handleUpdateCV = (newData: CVData) => {
     setCvData(newData);
     localStorage.setItem("portfolio-cv-data", JSON.stringify(newData));
 
     setSyncStatus("syncing");
-    try {
-      await setDoc(doc(db, "cv_data", "main"), newData);
-      setSyncStatus("synced");
-      setLastSyncedTime(new Date());
-    } catch (err) {
-      console.error("Firestore write CV error: ", err);
-      setSyncStatus("offline-pending");
-      handleFirestoreError(err, OperationType.WRITE, "cv_data/main");
+
+    if (cvUpdateTimeout.current) {
+      clearTimeout(cvUpdateTimeout.current);
     }
+
+    cvUpdateTimeout.current = setTimeout(async () => {
+      try {
+        const cleanData = JSON.parse(JSON.stringify(newData));
+        await setDoc(doc(db, "cv_data", "main"), cleanData);
+        setSyncStatus("synced");
+        setLastSyncedTime(new Date());
+      } catch (err) {
+        console.error("Firestore write CV error: ", err);
+        setSyncStatus("offline-pending");
+        handleFirestoreError(err, OperationType.WRITE, "cv_data/main");
+      }
+    }, 1000);
   };
 
   // Extract unique technology tags and categories from loaded projects
