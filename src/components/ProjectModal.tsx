@@ -120,153 +120,20 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             </div>
 
-            {/* Simulated Live Viewport of the App itself inside the Browser Frame - Sleeker maximum height aspect */}
-            <div className="w-full h-36 sm:h-48 md:h-52 relative bg-cover bg-center overflow-hidden flex items-center justify-center" style={{ backgroundImage: `url(${project.image})` }}>
-              {/* Overlay styling for dynamic simulation */}
-              <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-[2px] p-6 flex flex-col justify-between text-white">
-                
-                {/* Specific mockup layout tailored to EnrutApp or other projects */}
-                {project.id === "enrutapp" && (
-                  <>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                      <span className="text-sm font-bold tracking-tight">🚍 EnrutApp Admin</span>
-                      <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono">LIVE GPS FEED</span>
-                    </div>
-
-                    <div className="grid grid-cols-12 gap-3 my-auto">
-                      {/* Left: Transport Reservation Form Mockup */}
-                      <div className="col-span-12 sm:col-span-5 bg-black/40 border border-white/10 p-4 rounded-xl text-left">
-                        <h4 className="text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Reserva tu viaje</h4>
-                        <div className="space-y-2">
-                          <div>
-                            <span className="text-[9px] text-zinc-400 block uppercase">Origen</span>
-                            <div className="bg-white/10 text-xs py-1 px-2 rounded-md font-mono mt-0.5 border border-white/5">Bogotá, Terminal Norte</div>
-                          </div>
-                          <div>
-                            <span className="text-[9px] text-zinc-400 block uppercase">Destino</span>
-                            <div className="bg-white/10 text-xs py-1 px-2 rounded-md font-mono mt-0.5 border border-white/5">Medellín, Terminal Sur</div>
-                          </div>
-                          <button className="w-full bg-blue-600 hover:bg-blue-700 text-[10px] font-bold py-1.5 rounded-md mt-2 tracking-wide transition-colors">
-                            Buscar viajes
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Right: GPS Maps Mockup */}
-                      <div className="col-span-12 sm:col-span-7 bg-white/5 border border-white/10 p-3 rounded-xl flex flex-col justify-between min-h-[140px] relative overflow-hidden">
-                        {/* Fake map drawing background via pure CSS styling */}
-                        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
-                        
-                        {/* Simulated map route line */}
-                        <svg className="absolute inset-0 w-full h-full p-4 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-                          <path d="M10,80 Q50,20 90,40" fill="none" stroke="#2563eb" strokeWidth="4" strokeDasharray="5,3" />
-                          <circle cx="10" cy="80" r="4" fill="#ef4444" />
-                          <circle cx="90" cy="40" r="4" fill="#22c55e" />
-                        </svg>
-
-                        <div className="text-right z-10">
-                          <span className="text-[10px] bg-black/60 px-2.5 py-1 rounded border border-white/10 font-mono">Viaje en curso: Vehículo 104</span>
-                        </div>
-                        <div className="flex justify-between items-end mt-auto z-10">
-                          <span className="text-[9px] text-zinc-300">Validador biométrico ID: <strong className="text-emerald-400 font-normal">Aprobado ✓</strong></span>
-                          <span className="text-[9px] bg-blue-500/30 text-blue-300 px-2 py-0.5 rounded border border-blue-500/20">GPS Activo</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between text-[9px] text-zinc-400 border-t border-white/10 pt-2">
-                      <span>✓ Carga optima de base</span>
-                      <span>Habilitado sin conexión</span>
-                      <span>Sincronizando via Firebase Firestore</span>
-                    </div>
-                  </>
-                )}
-
-                {project.id === "cloudfire-analytics" && (
-                  <>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                      <span className="text-sm font-bold tracking-tight">🔥 CloudFire Telemetry Hub</span>
-                      <span className="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-mono">GCP CLOUD RUN</span>
-                    </div>
-
-                    <div className="grid grid-cols-12 gap-3 my-auto">
-                      <div className="col-span-12 sm:col-span-8 p-3 bg-black/30 border border-white/10 rounded-xl">
-                        <span className="text-[10px] uppercase text-zinc-400 font-bold block mb-2">Tráfico Global de Telemetría (Eventos)</span>
-                        {/* Pure CSS / SVG Chart Simulator */}
-                        <div className="h-24 flex items-end gap-1 px-2 border-b border-l border-white/10 py-1">
-                          <div className="w-full bg-amber-500/60 rounded-t h-[40%] text-center text-[7px]"></div>
-                          <div className="w-full bg-amber-500/70 rounded-t h-[65%]"></div>
-                          <div className="w-full bg-amber-500/90 rounded-t h-[95%]"></div>
-                          <div className="w-full bg-amber-500 rounded-t h-[80%]"></div>
-                          <div className="w-full bg-orange-400 rounded-t h-[110%] animate-pulse"></div>
-                        </div>
-                        <div className="flex justify-between text-[8px] text-zinc-500 mt-1 px-1">
-                          <span>00:00</span>
-                          <span>06:00</span>
-                          <span>12:00</span>
-                          <span>18:00</span>
-                          <span>En vivo (GCP)</span>
-                        </div>
-                      </div>
-
-                      <div className="col-span-12 sm:col-span-4 flex flex-col gap-2">
-                        <div className="p-2.5 bg-white/5 border border-white/10 rounded-lg text-left">
-                          <span className="text-[8px] uppercase text-zinc-400 block">Tiempo de Respuesta</span>
-                          <span className="text-lg font-mono font-bold text-amber-400">14 ms</span>
-                        </div>
-                        <div className="p-2.5 bg-white/5 border border-white/10 rounded-lg text-left">
-                          <span className="text-[8px] uppercase text-zinc-400 block">Estado de Funciones</span>
-                          <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">✓ Serverless OK</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between text-[9px] text-zinc-400 border-t border-white/10 pt-2">
-                      <span>✓ BigQuery Sink configurado</span>
-                      <span>Sincronización retardada: Activa</span>
-                      <span>Estado: 100% Funcional</span>
-                    </div>
-                  </>
-                )}
-
-                {project.id !== "enrutapp" && project.id !== "cloudfire-analytics" && (
-                  <>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                      <span className="text-sm font-bold tracking-tight">📁 DocuShare Portal v2.5</span>
-                      <span className="text-xs bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-2 py-0.5 rounded-full font-mono">WORKSPACE AUTH</span>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-auto text-left">
-                      <div className="p-3 bg-white/5 border border-white/10 rounded-lg">
-                        <span className="text-[9px] text-zinc-400 block">Google Drive Cloud</span>
-                        <div className="mt-2 text-xs flex items-center gap-1.5 font-mono">
-                          <span className="text-indigo-400">📂</span> Corporativo_2026
-                        </div>
-                      </div>
-                      <div className="p-3 bg-white/5 border border-white/10 rounded-lg">
-                        <span className="text-[9px] text-zinc-400 block">Último backup</span>
-                        <div className="mt-2 text-xs flex items-center gap-1.5 font-mono font-bold text-emerald-400">
-                          ✓ Completado hoy
-                        </div>
-                      </div>
-                      <div className="p-3 bg-white/5 border border-white/10 rounded-lg">
-                        <span className="text-[9px] text-zinc-400 block">Colaboradores</span>
-                        <div className="mt-2 text-xs flex items-center gap-1 -space-x-1.5">
-                          <span className="w-5 h-5 rounded-full bg-sky-500 border border-black flex items-center justify-center text-[7px]">AR</span>
-                          <span className="w-5 h-5 rounded-full bg-rose-500 border border-black flex items-center justify-center text-[7px]">JD</span>
-                          <span className="w-5 h-5 rounded-full bg-amber-500 border border-black flex items-center justify-center text-[7px]">+4</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between text-[9px] text-zinc-400 border-t border-white/10 pt-2">
-                      <span>✓ Sincronizado con Google Storage</span>
-                      <span>Modo Local: Activo</span>
-                    </div>
-                  </>
-                )}
-
-              </div>
+            {/* Image Viewport of the App itself inside the Browser Frame - Clean without mock overlay */}
+            <div className="w-full h-48 sm:h-56 md:h-64 relative overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+              {project.image ? (
+                <img 
+                  src={project.image} 
+                  alt={project.name} 
+                  className="w-full h-full object-cover" 
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-900">
+                  <span className="text-xs uppercase font-bold tracking-widest">Sin vista previa</span>
+                </div>
+              )}
             </div>
           </div>
 
