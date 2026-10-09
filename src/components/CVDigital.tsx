@@ -33,9 +33,10 @@ interface CVDigitalProps {
   onUpdate: (newData: CVData) => void;
   syncStatus: string;
   isOwner?: boolean;
+  onLoginPrompt?: () => void;
 }
 
-export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false }: CVDigitalProps) {
+export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false, onLoginPrompt }: CVDigitalProps) {
   const [activeTab, setActiveTab] = useState<"view" | "edit">("view");
 
   useEffect(() => {
@@ -327,7 +328,7 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
               <Eye className="h-3.5 w-3.5" />
               <span>Ver CV (Diseño)</span>
             </button>
-            {isOwner && (
+            {isOwner ? (
               <>
                 <button
                   id="tab-cv-edit"
@@ -362,7 +363,16 @@ export default function CVDigital({ data, onUpdate, syncStatus, isOwner = false 
                   <span>{isImportingPdf ? "Importando..." : "Importar CV (PDF)"}</span>
                 </button>
               </>
-            )}
+            ) : onLoginPrompt ? (
+              <button
+                onClick={onLoginPrompt}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 text-zinc-500 hover:text-zinc-800 transition-colors cursor-pointer"
+                title="Iniciar sesión con Google para editar habilidades y datos del CV"
+              >
+                <Settings className="h-3.5 w-3.5 text-zinc-400" />
+                <span>Editar (Acceso Dueño)</span>
+              </button>
+            ) : null}
           </div>
 
           {/* PDF Export Button */}

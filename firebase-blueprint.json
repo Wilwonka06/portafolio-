@@ -105,12 +105,28 @@
         "technologies",
         "highlights"
       ]
+    },
+    "tech_stack": {
+      "title": "TechStack",
+      "description": "List of technology tools and software with icon, description, and active status.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "Array of technology items with name, logoUrl, description, and enabled flag."
+        }
+      },
+      "required": ["items"]
     }
   },
   "firestore": {
     "/cv_data/main": {
       "schema": "cv_data",
       "description": "The primary entry point storing the entire candidate identity and ATS resume parameters."
+    },
+    "/cv_data/tech_stack": {
+      "schema": "tech_stack",
+      "description": "The technical tools and stack displayed in the interactive grid on the portfolio."
     },
     "/projects/{projectId}": {
       "schema": "project",
